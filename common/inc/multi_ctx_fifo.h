@@ -36,9 +36,8 @@ typedef struct
 
 #define mc_fifo_init(pstFifo, uiLen) do {    \
    multi_ctx_fifo_t *_pstFifo = (pstFifo);   \
-   const fifo_offset_t _uiLen = (uiLen);     \
    memset(_pstFifo, 0, sizeof(*_pstFifo));   \
-   static uint8_t _aucFifoBuff [_uiLen];     \
+   static uint8_t _aucFifoBuff [uiLen];     \
    _pstFifo->pucBuff = _aucFifoBuff;         \
    _pstFifo->uiSize = sizeof(_aucFifoBuff);  \
    } while (0)
