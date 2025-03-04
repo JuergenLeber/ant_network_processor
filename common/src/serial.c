@@ -359,49 +359,99 @@ void Serial_Init (void)
                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 
       #if defined (SERIAL_SYNC_PIN_SFLOW)
-      NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SFLOW] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                                 (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                                 (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                                 (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                                 (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         #if defined (SERIAL_SYNC_NRF_P1)
+            NRF_P1->PIN_CNF[SERIAL_SYNC_PIN_SFLOW] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                      (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                      (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                      (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                      (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         
+         #else
+            NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SFLOW] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                      (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                      (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                      (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                      (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         
+         #endif
       #endif //SERIAL_SYNC_PIN_SFLOW
       /*Configuring Serial SPI Pins*/
    #if !defined (SPI_IDLE_LOW_WORKAROUND)
-      NRF_GPIO->OUTSET = (1UL << SERIAL_SYNC_PIN_SCLK);
+      #if defined (SERIAL_SYNC_NRF_P1)
+         NRF_P1->OUTSET = (1UL << SERIAL_SYNC_PIN_SCLK);
+      #else
+         NRF_GPIO->OUTSET = (1UL << SERIAL_SYNC_PIN_SCLK);
+      #endif   
    #endif
-      NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SCLK] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
-                                                (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
-                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-      NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SOUT] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
-                                                (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
-                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-      NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SIN] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                               (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                               (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                               (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                               (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-      SERIAL_SYNC->PSELSCK = SERIAL_SYNC_PIN_SCLK;    // Assign port pin for Serial Clock
-      SERIAL_SYNC->PSELMOSI = SERIAL_SYNC_PIN_SOUT;   // Assign port pin for Serial Out
-      SERIAL_SYNC->PSELMISO = SERIAL_SYNC_PIN_SIN;    // Assign port pin for serial In
+      #if defined (SERIAL_SYNC_NRF_P1)
+         NRF_P1->PIN_CNF[SERIAL_SYNC_PIN_SCLK] =   (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_P1->PIN_CNF[SERIAL_SYNC_PIN_SOUT] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_P1->PIN_CNF[SERIAL_SYNC_PIN_SIN] =  (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+      #else
+         NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SCLK] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SOUT] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_SIN] =  (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                   (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                   (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                   (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                   (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+      #endif   
+      #if defined (SERIAL_SYNC_NRF_P1)
+         SERIAL_SYNC->PSELSCK = (SERIAL_SYNC_PIN_SCLK + 32);    // Assign port pin for Serial Clock
+         SERIAL_SYNC->PSELMOSI = (SERIAL_SYNC_PIN_SOUT + 32);   // Assign port pin for Serial Out
+         SERIAL_SYNC->PSELMISO = (SERIAL_SYNC_PIN_SIN + 32);    // Assign port pin for serial In
+      #else
+         SERIAL_SYNC->PSELSCK = SERIAL_SYNC_PIN_SCLK;    // Assign port pin for Serial Clock
+         SERIAL_SYNC->PSELMOSI = SERIAL_SYNC_PIN_SOUT;   // Assign port pin for Serial Out
+         SERIAL_SYNC->PSELMISO = SERIAL_SYNC_PIN_SIN;    // Assign port pin for serial In
+      #endif
 
       SERIAL_SYNC->CONFIG = (SPI_CONFIG_ORDER_LsbFirst << SPI_CONFIG_ORDER_Pos) |
                             (SPI_CONFIG_CPHA_Trailing << SPI_CONFIG_CPHA_Pos) |
                             (SPI_CONFIG_CPOL_ActiveLow << SPI_CONFIG_CPOL_Pos);
 
    #if defined (SERIAL_SYNC_PIN_BR3)
-      NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                               (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                               (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                               (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                               (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+      #if defined (SERIAL_SYNC_NRF_P1)
+         NRF_P1->PIN_CNF[SERIAL_SYNC_PIN_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 
 
-      // BR3 = 0 -> 500kHz SPI clk (default low supported rate), BR3 = 1 -> higher rate
-      if (NRF_GPIO->IN & (1UL << SERIAL_SYNC_PIN_BR3))
+         // BR3 = 0 -> 500kHz SPI clk (default low supported rate), BR3 = 1 -> higher rate
+         if (NRF_P1->IN & (1UL << SERIAL_SYNC_PIN_BR3))
+      #else
+         NRF_GPIO->PIN_CNF[SERIAL_SYNC_PIN_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+
+
+         // BR3 = 0 -> 500kHz SPI clk (default low supported rate), BR3 = 1 -> higher rate
+         if (NRF_GPIO->IN & (1UL << SERIAL_SYNC_PIN_BR3))
+      #endif
       {
          SERIAL_SYNC->FREQUENCY = (SERIAL_SYNC_FREQUENCY << SPI_FREQUENCY_FREQUENCY_Pos);
       }
@@ -497,29 +547,55 @@ void Serial_Init (void)
       ucBaudrateNdx = SERIAL_BAUDRATE_DEFAULT_NDX;   // Default
    #endif
 
-   #if defined (SERIAL_ASYNC_BR1) && (SERIAL_ASYNC_BR2) && (SERIAL_ASYNC_BR3)
-      NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR1] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                            (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                            (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                            (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                            (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-      NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR2] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                            (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                            (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                            (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                            (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-      NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
-                                            (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
-                                            (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
-                                            (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
-                                            (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   #if defined(SERIAL_ASYNC_NRF_P1)
+      #if defined (SERIAL_ASYNC_BR1) && (SERIAL_ASYNC_BR2) && (SERIAL_ASYNC_BR3)
+         NRF_P1->PIN_CNF[SERIAL_ASYNC_BR1] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_P1->PIN_CNF[SERIAL_ASYNC_BR2] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_P1->PIN_CNF[SERIAL_ASYNC_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 
-      System_WriteBufferEmpty(&NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR3]); //Make sure everything is flushed before evaluating.
+         System_WriteBufferEmpty(&NRF_P1->PIN_CNF[SERIAL_ASYNC_BR3]); //Make sure everything is flushed before evaluating.
 
-      ucBaudrateNdx  = (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR1)) ? 0x01 : 0x00;
-      ucBaudrateNdx |= (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR2)) ? 0x02 : 0x00;
-      ucBaudrateNdx |= (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR3)) ? 0x04 : 0x00;
-   #endif // SERIAL_ASYNC_BR1, SERIAL_ASYNC_BR2, SERIAL_ASYNC_BR3
+         ucBaudrateNdx  = (NRF_P1->IN & (1UL << SERIAL_ASYNC_BR1)) ? 0x01 : 0x00;
+         ucBaudrateNdx |= (NRF_P1->IN & (1UL << SERIAL_ASYNC_BR2)) ? 0x02 : 0x00;
+         ucBaudrateNdx |= (NRF_P1->IN & (1UL << SERIAL_ASYNC_BR3)) ? 0x04 : 0x00;
+      #endif // SERIAL_ASYNC_BR1, SERIAL_ASYNC_BR2, SERIAL_ASYNC_BR3
+   #else
+      #if defined (SERIAL_ASYNC_BR1) && (SERIAL_ASYNC_BR2) && (SERIAL_ASYNC_BR3)
+         NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR1] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR2] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+         NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR3] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                             (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                             (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                             (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                             (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+
+         System_WriteBufferEmpty(&NRF_GPIO->PIN_CNF[SERIAL_ASYNC_BR3]); //Make sure everything is flushed before evaluating.
+
+         ucBaudrateNdx  = (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR1)) ? 0x01 : 0x00;
+         ucBaudrateNdx |= (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR2)) ? 0x02 : 0x00;
+         ucBaudrateNdx |= (NRF_GPIO->IN & (1UL << SERIAL_ASYNC_BR3)) ? 0x04 : 0x00;
+      #endif // SERIAL_ASYNC_BR1, SERIAL_ASYNC_BR2, SERIAL_ASYNC_BR3
+   #endif
 
    #if !defined(PWRSAVE_DISABLE)
       /* configure but don't arm yet the sleep pin */
@@ -537,6 +613,18 @@ void Serial_Init (void)
                                                     (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
    #endif // PWRSAVE_DISABLE
 
+   #if defined(SERIAL_ASYNC_NRF_P1)
+      NRF_P1->PIN_CNF[SERIAL_ASYNC_PIN_RXD] =   (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
+                                                (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+      NRF_P1->PIN_CNF[SERIAL_ASYNC_PIN_TXD] =   (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                                (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                                (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                                (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                                (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   #else
       NRF_GPIO->PIN_CNF[SERIAL_ASYNC_PIN_RXD] = (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos) |
                                                 (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |
                                                 (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
@@ -547,16 +635,23 @@ void Serial_Init (void)
                                                 (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
                                                 (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
                                                 (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   #endif
+
       NRF_GPIO->PIN_CNF[SERIAL_ASYNC_PIN_RTS] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
                                                 (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
                                                 (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
                                                 (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
                                                 (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
       #if defined(SERIAL_USE_UARTE)
-         SERIAL_ASYNC->PSEL.RXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
-         SERIAL_ASYNC->PSEL.TXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
-         SERIAL_ASYNC->PSEL.RTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
-
+         #if defined(SERIAL_ASYNC_NRF_P1)
+            SERIAL_ASYNC->PSEL.RXD = (SERIAL_ASYNC_PIN_RXD + 32); // assign port pin for RXD
+            SERIAL_ASYNC->PSEL.TXD = (SERIAL_ASYNC_PIN_TXD + 32); // assign port pin for TXD
+            SERIAL_ASYNC->PSEL.RTS = (SERIAL_ASYNC_PIN_RTS + 32); // assign port pin for RTS
+         #else
+            SERIAL_ASYNC->PSEL.RXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
+            SERIAL_ASYNC->PSEL.TXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
+            SERIAL_ASYNC->PSEL.RTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
+         #endif
          SERIAL_ASYNC->CONFIG = (UARTE_CONFIG_HWFC_Enabled << UARTE_CONFIG_HWFC_Pos) |
                                 (UARTE_CONFIG_PARITY_Excluded << UARTE_CONFIG_PARITY_Pos); // flow control and parity
          SERIAL_ASYNC->BAUDRATE = asBaudControl[ucBaudrateNdx] << UARTE_BAUDRATE_BAUDRATE_Pos; // baudrate
@@ -568,12 +663,17 @@ void Serial_Init (void)
          sd_nvic_SetPriority(UARTE0_UART0_IRQn, APP_IRQ_PRIORITY_MID); // set it up on application high priority
          sd_nvic_EnableIRQ(UARTE0_UART0_IRQn); // enable UART interrupt
       #else
-         SERIAL_ASYNC->PSELRXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
-         SERIAL_ASYNC->PSELTXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
-         SERIAL_ASYNC->PSELRTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
-
-         SERIAL_ASYNC->CONFIG = (UART_CONFIG_HWFC_Enabled << UART_CONFIG_HWFC_Pos) |
-                             (UART_CONFIG_PARITY_Excluded << UART_CONFIG_PARITY_Pos); // flow control and parity
+         #if defined(SERIAL_ASYNC_NRF_P1)
+            SERIAL_ASYNC->PSELRXD = (SERIAL_ASYNC_PIN_RXD + 32); // assign port pin for RXD
+            SERIAL_ASYNC->PSELTXD = (SERIAL_ASYNC_PIN_TXD + 32); // assign port pin for TXD
+            SERIAL_ASYNC->PSELRTS = (SERIAL_ASYNC_PIN_RTS + 32); // assign port pin for RTS
+         #else
+            SERIAL_ASYNC->PSELRXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
+            SERIAL_ASYNC->PSELTXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
+            SERIAL_ASYNC->PSELRTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
+         #endif
+         SERIAL_ASYNC->CONFIG =  (UART_CONFIG_HWFC_Enabled << UART_CONFIG_HWFC_Pos) |
+                                 (UART_CONFIG_PARITY_Excluded << UART_CONFIG_PARITY_Pos); // flow control and parity
          SERIAL_ASYNC->BAUDRATE = asBaudControl[ucBaudrateNdx] << UART_BAUDRATE_BAUDRATE_Pos; // baudrate
 
          SERIAL_ASYNC_SERIAL_ENABLE(); // enable uart and acquire pins

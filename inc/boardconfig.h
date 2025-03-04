@@ -65,6 +65,16 @@ All rights reserved.
        #define SERIAL_ASYNC_BR1               (3UL)      // baud rate pin 1 selector
        #define SERIAL_ASYNC_BR2               (24UL)     // baud rate pin 2 selector
        #define SERIAL_ASYNC_BR3               (6UL)      // baud rate pin 3 selector
+     #elif defined(XIAO_NRF52840)
+       #define SERIAL_ASYNC_NRF_P1
+       #define SERIAL_ASYNC_PIN_RTS           (29UL)     // out
+       #define SERIAL_ASYNC_PIN_TXD           (11UL)     // out !P1
+       #define SERIAL_ASYNC_PIN_RXD           (12UL)     // in  !P1
+       #define SERIAL_ASYNC_PIN_SLEEP         (2UL)      // in
+       #define SERIAL_ASYNC_PIN_SUSPEND       (28UL)     // in
+       #define SERIAL_ASYNC_BR1               (14UL)     // baud rate pin 1 selector !P1
+       #define SERIAL_ASYNC_BR2               (13UL)     // baud rate pin 2 selector !P1
+       #define SERIAL_ASYNC_BR3               (15UL)     // baud rate pin 3 selector !P1
      #else // Pins used for the Nordic DK boards
        #define SERIAL_ASYNC_PIN_RTS           (5UL)      // out
        #define SERIAL_ASYNC_PIN_TXD           (15UL)     // out
@@ -97,6 +107,16 @@ All rights reserved.
         #define SERIAL_SYNC_PIN_SCLK           (24UL)    // out
   //    #define SERIAL_SYNC_PIN_SFLOW          (3UL)     // in. Bit synchronous not supported
         #define SERIAL_SYNC_PIN_BR3            (6UL)     // bit rate pin selector
+     #elif defined(XIAO_NRF52840)
+        #define SERIAL_SYNC_NRF_P1
+        #define SERIAL_SYNC_PIN_SMSGRDY        (2UL)     // in
+        #define SERIAL_SYNC_PIN_SRDY           (28UL)    // in
+        #define SERIAL_SYNC_PIN_SEN            (29UL)    // out
+        #define SERIAL_SYNC_PIN_SIN            (14UL)    // in !P1
+        #define SERIAL_SYNC_PIN_SOUT           (15UL)    // out !P1
+        #define SERIAL_SYNC_PIN_SCLK           (13UL)    // out !P1
+  //    #define SERIAL_SYNC_PIN_SFLOW          (11UL)    // in. Bit synchronous not supported !P1
+        #define SERIAL_SYNC_PIN_BR3            (12UL)    // bit rate pin selector !P1
      #else // Pins used for the Nordic DK boards
         #define SERIAL_SYNC_PIN_SMSGRDY        (2UL)     // in
         #define SERIAL_SYNC_PIN_SRDY           (23UL)    // in
