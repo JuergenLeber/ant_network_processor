@@ -1,7 +1,11 @@
 .pio
 .vscode
 .DS_Store
+.clangd
 build
 RTE
 application_n5x.uvguix.crossover
 application_n5x.uvoptx
+uv2csolution.log
+out
+tmp

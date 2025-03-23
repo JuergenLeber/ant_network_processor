@@ -1,0 +1,430 @@
+project:
+  packs:
+    - pack: ARM::CMSIS@^6.1.0
+    - pack: NordicSemiconductor::nRF_DeviceFamilyPack@^8.44.1
+    - pack: ARM::CMSIS-NN@^4.0.0
+    - pack: ARM::CMSIS-DSP@^1.10.1
+  setups:
+    - setup: Options for d52q_module
+      for-context: +d52q_module
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - D52Q_MODULE
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for d52m_module
+      for-context: +d52m_module
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - D52M_MODULE
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for d52q_premium_module
+      for-context: +d52q_premium_module
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - D52Q_PREMIUM_MODULE
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for d52m_premium_module
+      for-context: +d52m_premium_module
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - D52M_PREMIUM_MODULE
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for nRF52832_generic, nRF52840_generic
+      for-context:
+        - +nRF52832_generic
+        - +nRF52840_generic
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for xiao_nRF52840
+      for-context: +xiao_nRF52840
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52840_XXAA
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - XIAO_NRF52840
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+  linker:
+    - script: application_n5x_d52q_module.sct
+      for-context: +d52q_module
+    - script: application_n5x_d52m_module.sct
+      for-context: +d52m_module
+    - script: application_n5x_d52q_premium_module.sct
+      for-context: +d52q_premium_module
+    - script: application_n5x_d52m_premium_module.sct
+      for-context: +d52m_premium_module
+    - script: application_n5x_nRF52832_generic.sct
+      for-context: +nRF52832_generic
+    - script: application_n5x_nRF52840_generic.sct
+      for-context: +nRF52840_generic
+    - script: application_n5x_xiao_nRF52840.sct
+      for-context: +xiao_nRF52840
+  groups:
+    - group: main
+      files:
+        - file: src/main.c
+        - file: src/version.c
+        - file: common/src/command.c
+        - file: common/src/dsi_utility.c
+        - file: common/src/serial.c
+        - file: common/src/global.c
+        - file: common/src/system.c
+        - file: common/src/event_buffering.c
+        - file: common/src/multi_ctx_fifo.c
+  components:
+    - component: ARM::CMSIS:CORE
+    - component: NordicSemiconductor::Device:Startup
+      for-context:
+        - +d52m_module
+        - +d52m_premium_module
+        - +d52q_module
+        - +d52q_premium_module
+        - +nRF52832_generic
+    - component: NordicSemiconductor::Device:Startup
+      for-context:
+        - +nRF52840_generic
+        - +xiao_nRF52840
+  output:
+    type:
+      - hex
+      - bin

@@ -1,0 +1,185 @@
+build:
+  generated-by: csolution version 2.8.0
+  solution: application_n5x.csolution.yml
+  project: application_n5x.cproject.yml
+  context: application_n5x+xiao_nRF52840
+  compiler: AC6
+  device: Nordic Semiconductor::nRF52840_xxAA
+  device-pack: NordicSemiconductor::nRF_DeviceFamilyPack@8.44.1
+  processor:
+    dsp: on
+    endian: little
+    fpu: sp
+    core: Cortex-M4
+  packs:
+    - pack: ARM::CMSIS@6.1.0
+      path: ${CMSIS_PACK_ROOT}/ARM/CMSIS/6.1.0
+    - pack: NordicSemiconductor::nRF_DeviceFamilyPack@8.44.1
+      path: ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1
+  optimize: debug
+  debug: on
+  misc:
+    ASM:
+      - -masm=auto
+    C:
+      - -std=c99
+      - -fno-rtti
+      - -funsigned-char
+      - -fno-function-sections
+      - -Wno-packed
+      - -Wno-missing-variable-declarations
+      - -Wno-missing-prototypes
+      - -Wno-missing-noreturn
+      - -Wno-sign-conversion
+      - -Wno-nonportable-include-path
+      - -Wno-reserved-id-macro
+      - -Wno-unused-macros
+      - -Wno-documentation-unknown-command
+      - -Wno-documentation
+      - -Wno-license-management
+      - -Wno-parentheses-equality
+      - --std=c99
+    CPP:
+      - -xc++
+      - -std=c++11
+      - -fno-exceptions
+      - -fno-rtti
+      - -funsigned-char
+      - -fno-function-sections
+      - -Wno-packed
+      - -Wno-missing-variable-declarations
+      - -Wno-missing-prototypes
+      - -Wno-missing-noreturn
+      - -Wno-sign-conversion
+      - -Wno-nonportable-include-path
+      - -Wno-reserved-id-macro
+      - -Wno-unused-macros
+      - -Wno-documentation-unknown-command
+      - -Wno-documentation
+      - -Wno-license-management
+      - -Wno-parentheses-equality
+      - --std=c99
+    Link:
+      - --map
+      - --load_addr_map_info
+      - --xref
+      - --callgraph
+      - --symbols
+      - --info sizes
+      - --info totals
+      - --info unused
+      - --info veneers
+      - --strict
+      - --summary_stderr
+      - --info summarysizes
+  define:
+    - NRF52840_XXAA
+    - CONFIG_GPIO_AS_PINRESET
+    - NRF52_RADIO
+    - NRF52_N548_CONFIG
+    - CONFIG_NFCT_PINS_AS_GPIOS
+    - XIAO_NRF52840
+    - SOFTDEVICE_PRESENT
+    - DEBUG
+    - NRF52840_XXAA
+    - _RTE_
+  define-asm:
+    - NRF52840_XXAA
+    - _RTE_
+  add-path:
+    - inc
+    - common/inc
+    - ../../../components/libraries/util
+    - ../../../components/libraries/delay
+    - ../../../modules/nrfx
+    - ../../../integration/nrfx
+    - ../../../modules/nrfx/mdk
+    - ../../../components/softdevice/s212/headers
+    - ../../../components/softdevice/s212/headers/nrf52
+    - RTE/_xiao_nRF52840
+    - ${CMSIS_PACK_ROOT}/ARM/CMSIS/6.1.0/CMSIS/Core/Include
+    - ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1/Device/Include
+  add-path-asm:
+    - RTE/_xiao_nRF52840
+    - ${CMSIS_PACK_ROOT}/ARM/CMSIS/6.1.0/CMSIS/Core/Include
+    - ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1/Device/Include
+  output-dirs:
+    intdir: tmp
+    outdir: out/application_n5x/xiao_nRF52840
+    rtedir: RTE
+  output:
+    - type: bin
+      file: application_n5x.bin
+    - type: elf
+      file: application_n5x.axf
+    - type: hex
+      file: application_n5x.hex
+  components:
+    - component: ARM::CMSIS:CORE@6.1.0
+      condition: ARMv6_7_8-M Device
+      from-pack: ARM::CMSIS@6.1.0
+      selected-by: ARM::CMSIS:CORE
+      files:
+        - file: ${CMSIS_PACK_ROOT}/ARM/CMSIS/6.1.0/CMSIS/Core/Include
+          category: include
+          version: 6.1.0
+        - file: ${CMSIS_PACK_ROOT}/ARM/CMSIS/6.1.0/CMSIS/Documentation/html/Core/index.html
+          category: doc
+          version: 6.1.0
+    - component: NordicSemiconductor::Device:Startup@8.44.1
+      condition: nRF52840 Device and CMSIS
+      from-pack: NordicSemiconductor::nRF_DeviceFamilyPack@8.44.1
+      selected-by: NordicSemiconductor::Device:Startup
+      files:
+        - file: ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1/Device/Include/system_nrf.h
+          category: header
+          version: 8.44.1
+        - file: ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1/Device/Include/system_nrf52840.h
+          category: header
+          version: 8.44.1
+        - file: RTE/Device/nRF52840_xxAA/arm_startup_nrf52840.s
+          category: source
+          attr: config
+          version: 8.44.1
+        - file: RTE/Device/nRF52840_xxAA/system_nrf52.c
+          category: source
+          attr: config
+          version: 8.44.1
+  linker:
+    script: application_n5x_xiao_nRF52840.sct
+  groups:
+    - group: main
+      files:
+        - file: src/main.c
+          category: sourceC
+        - file: src/version.c
+          category: sourceC
+        - file: common/src/command.c
+          category: sourceC
+        - file: common/src/dsi_utility.c
+          category: sourceC
+        - file: common/src/serial.c
+          category: sourceC
+        - file: common/src/global.c
+          category: sourceC
+        - file: common/src/system.c
+          category: sourceC
+        - file: common/src/event_buffering.c
+          category: sourceC
+        - file: common/src/multi_ctx_fifo.c
+          category: sourceC
+  constructed-files:
+    - file: RTE/_xiao_nRF52840/RTE_Components.h
+      category: header
+  licenses:
+    - license: <unknown>
+      license-agreement: ${CMSIS_PACK_ROOT}/NordicSemiconductor/nRF_DeviceFamilyPack/8.44.1/License/license.txt
+      packs:
+        - pack: NordicSemiconductor::nRF_DeviceFamilyPack@8.44.1
+      components:
+        - component: NordicSemiconductor::Device:Startup@8.44.1
+    - license: Apache-2.0
+      packs:
+        - pack: ARM::CMSIS@6.1.0
+      components:
+        - component: ARM::CMSIS:CORE@6.1.0

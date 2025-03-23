@@ -1,0 +1,28 @@
+solution:
+  created-by: uv2csolution@1.6.0
+  created-for: CMSIS-Toolbox@2.7.0
+  compiler: AC6
+  target-types:
+    - type: d52q_module
+      device: nRF52832_xxAA
+      optimize: debug
+    - type: d52m_module
+      device: nRF52832_xxAA
+      optimize: debug
+    - type: d52q_premium_module
+      device: nRF52832_xxAA
+      optimize: debug
+    - type: d52m_premium_module
+      device: nRF52832_xxAA
+      optimize: debug
+    - type: nRF52832_generic
+      device: nRF52832_xxAA
+      optimize: debug
+    - type: nRF52840_generic
+      device: nRF52840_xxAA
+      optimize: debug
+    - type: xiao_nRF52840
+      device: nRF52840_xxAA
+      optimize: debug
+  projects:
+    - project: application_n5x.cproject.yml

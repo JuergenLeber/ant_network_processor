@@ -1,0 +1,88 @@
+build:
+  generated-by: csolution version 2.8.0
+  solution: application_n5x.csolution.yml
+  project: application_n5x.cproject.yml
+  context: application_n5x+d52q_module
+  compiler: AC6
+  optimize: debug
+  debug: on
+  misc:
+    ASM:
+      - -masm=auto
+    C:
+      - -std=c99
+      - -fno-rtti
+      - -funsigned-char
+      - -fno-function-sections
+      - -Wno-packed
+      - -Wno-missing-variable-declarations
+      - -Wno-missing-prototypes
+      - -Wno-missing-noreturn
+      - -Wno-sign-conversion
+      - -Wno-nonportable-include-path
+      - -Wno-reserved-id-macro
+      - -Wno-unused-macros
+      - -Wno-documentation-unknown-command
+      - -Wno-documentation
+      - -Wno-license-management
+      - -Wno-parentheses-equality
+      - --std=c99
+    CPP:
+      - -xc++
+      - -std=c++11
+      - -fno-exceptions
+      - -fno-rtti
+      - -funsigned-char
+      - -fno-function-sections
+      - -Wno-packed
+      - -Wno-missing-variable-declarations
+      - -Wno-missing-prototypes
+      - -Wno-missing-noreturn
+      - -Wno-sign-conversion
+      - -Wno-nonportable-include-path
+      - -Wno-reserved-id-macro
+      - -Wno-unused-macros
+      - -Wno-documentation-unknown-command
+      - -Wno-documentation
+      - -Wno-license-management
+      - -Wno-parentheses-equality
+      - --std=c99
+    Link:
+      - --map
+      - --load_addr_map_info
+      - --xref
+      - --callgraph
+      - --symbols
+      - --info sizes
+      - --info totals
+      - --info unused
+      - --info veneers
+      - --strict
+      - --summary_stderr
+      - --info summarysizes
+  define:
+    - NRF52
+    - CONFIG_GPIO_AS_PINRESET
+    - NRF52_RADIO
+    - NRF52_N548_CONFIG
+    - CONFIG_NFCT_PINS_AS_GPIOS
+    - D52Q_MODULE
+    - SOFTDEVICE_PRESENT
+    - DEBUG
+  add-path:
+    - inc
+    - common/inc
+    - ../../../components/libraries/util
+    - ../../../components/libraries/delay
+    - ../../../modules/nrfx
+    - ../../../integration/nrfx
+    - ../../../modules/nrfx/mdk
+    - ../../../components/softdevice/s212/headers
+    - ../../../components/softdevice/s212/headers/nrf52
+  output-dirs:
+    intdir: tmp
+    outdir: out/application_n5x/d52q_module
+    rtedir: RTE
+  output:
+    - type: elf
+      file: application_n5x.axf
