@@ -47,7 +47,11 @@ All rights reserved.
  * GENERIC REGISTERS
  ***************************************************************************/
 
-#define NUMBER_OF_NRF_GPIO_PINS              (32)
+#if defined (SERIAL_SYNC_NRF_P1)
+   #define NUMBER_OF_NRF_GPIO_PINS              (64)
+#else
+   #define NUMBER_OF_NRF_GPIO_PINS              (32)
+#endif
 
 /***************************************************************************
  * NRF SYNCHRONOUS SPI PERIPHERAL ACCESS DEFINITIONS
@@ -646,12 +650,11 @@ void Serial_Init (void)
          #if defined(SERIAL_ASYNC_NRF_P1)
             SERIAL_ASYNC->PSEL.RXD = (SERIAL_ASYNC_PIN_RXD + 32); // assign port pin for RXD
             SERIAL_ASYNC->PSEL.TXD = (SERIAL_ASYNC_PIN_TXD + 32); // assign port pin for TXD
-            SERIAL_ASYNC->PSEL.RTS = (SERIAL_ASYNC_PIN_RTS + 32); // assign port pin for RTS
          #else
             SERIAL_ASYNC->PSEL.RXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
             SERIAL_ASYNC->PSEL.TXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
-            SERIAL_ASYNC->PSEL.RTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
          #endif
+         SERIAL_ASYNC->PSEL.RTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
          SERIAL_ASYNC->CONFIG = (UARTE_CONFIG_HWFC_Enabled << UARTE_CONFIG_HWFC_Pos) |
                                 (UARTE_CONFIG_PARITY_Excluded << UARTE_CONFIG_PARITY_Pos); // flow control and parity
          SERIAL_ASYNC->BAUDRATE = asBaudControl[ucBaudrateNdx] << UARTE_BAUDRATE_BAUDRATE_Pos; // baudrate
@@ -666,12 +669,11 @@ void Serial_Init (void)
          #if defined(SERIAL_ASYNC_NRF_P1)
             SERIAL_ASYNC->PSELRXD = (SERIAL_ASYNC_PIN_RXD + 32); // assign port pin for RXD
             SERIAL_ASYNC->PSELTXD = (SERIAL_ASYNC_PIN_TXD + 32); // assign port pin for TXD
-            SERIAL_ASYNC->PSELRTS = (SERIAL_ASYNC_PIN_RTS + 32); // assign port pin for RTS
          #else
             SERIAL_ASYNC->PSELRXD = SERIAL_ASYNC_PIN_RXD; // assign port pin for RXD
             SERIAL_ASYNC->PSELTXD = SERIAL_ASYNC_PIN_TXD; // assign port pin for TXD
-            SERIAL_ASYNC->PSELRTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
          #endif
+         SERIAL_ASYNC->PSELRTS = SERIAL_ASYNC_PIN_RTS; // assign port pin for RTS
          SERIAL_ASYNC->CONFIG =  (UART_CONFIG_HWFC_Enabled << UART_CONFIG_HWFC_Pos) |
                                  (UART_CONFIG_PARITY_Excluded << UART_CONFIG_PARITY_Pos); // flow control and parity
          SERIAL_ASYNC->BAUDRATE = asBaudControl[ucBaudrateNdx] << UART_BAUDRATE_BAUDRATE_Pos; // baudrate
