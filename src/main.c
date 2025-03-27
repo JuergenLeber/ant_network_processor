@@ -198,6 +198,29 @@ void Main_SetQueuedBurst(void)
  */
 int main()
 {
+
+   #if defined(XIAO_NRF52840)
+   //Initialize LED GPIOs and start with red only until SoftDevice is started 
+   NRF_GPIO->PIN_CNF[LED_RED_PIN] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                    (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                    (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                    (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                    (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   NRF_GPIO->PIN_CNF[LED_GREEN_PIN] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                      (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                      (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                      (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                      (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   NRF_GPIO->PIN_CNF[LED_BLUE_PIN] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
+                                     (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
+                                     (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
+                                     (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
+                                     (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
+   NRF_GPIO->OUTSET = (1UL << LED_BLUE_PIN);
+   NRF_GPIO->OUTCLR = (1UL << LED_RED_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   #endif	
+
    nrf_clock_lf_cfg_t clock_source;
 
    // Initialize nrf_nvic_state to 0
@@ -213,6 +236,13 @@ int main()
    clock_source.accuracy = NRF_CLOCK_LF_ACCURACY_50_PPM;
 
    ulErrorCode = sd_softdevice_enable(&clock_source, softdevice_assert_callback, ANT_LICENSE_KEY);
+
+   #if defined(XIAO_NRF52840)
+   //After SoftDevice is enabled switch to red+blue 
+   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
+   NRF_GPIO->OUTCLR = (1UL << LED_RED_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   #endif	
 
    APP_ERROR_CHECK(ulErrorCode);
 
@@ -263,8 +293,21 @@ int main()
    System_Init();
    event_buffering_init();
 
+   #if defined(XIAO_NRF52840)
+   //After System init switch to blue 
+   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   #endif	
 
    Serial_Init();
+
+   #if defined(XIAO_NRF52840)
+   //After Serial init switch to blue+green 
+   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
+   NRF_GPIO->OUTCLR = (1UL << LED_GREEN_PIN);
+   #endif	
 
    pstRxMessage = Serial_GetRxMesgPtr();
    pstTxMessage = Serial_GetTxMesgPtr();
@@ -276,6 +319,13 @@ int main()
    // reset power reset reason after constructing startup message
    ulErrorCode = sd_power_reset_reason_clr(POWER_RESETREAS_OFF_Msk | POWER_RESETREAS_LOCKUP_Msk | POWER_RESETREAS_SREQ_Msk | POWER_RESETREAS_DOG_Msk | POWER_RESETREAS_RESETPIN_Msk); // clear reset reasons
    APP_ERROR_CHECK(ulErrorCode);
+
+   #if defined(XIAO_NRF52840)
+   //Everything done, switch to green 
+   NRF_GPIO->OUTSET = (1UL << LED_BLUE_PIN);
+   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
+   NRF_GPIO->OUTCLR = (1UL << LED_GREEN_PIN);
+   #endif	
 
 
    // loop forever

@@ -75,6 +75,9 @@ All rights reserved.
        #define SERIAL_ASYNC_BR1               (14UL)     // baud rate pin 1 selector !P1
        #define SERIAL_ASYNC_BR2               (13UL)     // baud rate pin 2 selector !P1
        #define SERIAL_ASYNC_BR3               (15UL)     // baud rate pin 3 selector !P1
+       #define LED_RED_PIN                    (26UL)     // out
+       #define LED_GREEN_PIN                  (30UL)     // out
+       #define LED_BLUE_PIN                   (6UL)      // out
      #else // Pins used for the Nordic DK boards
        #define SERIAL_ASYNC_PIN_RTS           (5UL)      // out
        #define SERIAL_ASYNC_PIN_TXD           (15UL)     // out
