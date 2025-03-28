@@ -47,11 +47,7 @@ All rights reserved.
  * GENERIC REGISTERS
  ***************************************************************************/
 
-#if defined (SERIAL_SYNC_NRF_P1)
-   #define NUMBER_OF_NRF_GPIO_PINS              (64)
-#else
-   #define NUMBER_OF_NRF_GPIO_PINS              (32)
-#endif
+#define NUMBER_OF_NRF_GPIO_PINS              (32)
 
 /***************************************************************************
  * NRF SYNCHRONOUS SPI PERIPHERAL ACCESS DEFINITIONS
@@ -796,6 +792,22 @@ void Serial_Sleep(void)
             NRF_GPIO->PIN_CNF[i] &= ~((~GPIO_PIN_CNF_SENSE_Disabled) << GPIO_PIN_CNF_SENSE_Pos);
          }
 
+      #if defined (SERIAL_SYNC_NRF_P1)
+         /* do the same for port 1 */
+         ulPinSenseEnabled = 0;
+         ulPinSenseCfg = 0;
+         for (i = 0; i < NUMBER_OF_NRF_GPIO_PINS; i++)
+         {
+            if (NRF_P1->PIN_CNF[i] & GPIO_PIN_CNF_SENSE_Msk)
+            {
+               ulPinSenseEnabled |= 0x01 << i;        // log pin enabled status
+               if (((NRF_P1->PIN_CNF[i] & GPIO_PIN_CNF_SENSE_Msk) >> GPIO_PIN_CNF_SENSE_Pos) == GPIO_PIN_CNF_SENSE_High)
+                  ulPinSenseCfg |= 0x01 << i;         // log sense level status
+            }
+            // disable sense on this pin
+            NRF_P1->PIN_CNF[i] &= ~((~GPIO_PIN_CNF_SENSE_Disabled) << GPIO_PIN_CNF_SENSE_Pos);
+         }
+      #endif
 
       #if !defined(PWRSAVE_DISABLE)
          /* set up sense trigger on suspend signal low */

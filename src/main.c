@@ -193,14 +193,12 @@ void Main_SetQueuedBurst(void)
    bEventBurstMessageProcess = 1; // ANT burst message to process
 }
 
+#if defined(XIAO_NRF52840)
 /**
- * @brief Main
+ * @brief Set LEDs on Seeed XIAO nRF52840 (with pin initialization as other methods are overwriting it)
  */
-int main()
+void SetLEDs(bool red, bool green, bool blue)
 {
-
-   #if defined(XIAO_NRF52840)
-   //Initialize LED GPIOs and start with red only until SoftDevice is started 
    NRF_GPIO->PIN_CNF[LED_RED_PIN] = (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos) |
                                     (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) |
                                     (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
@@ -216,16 +214,26 @@ int main()
                                      (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |
                                      (GPIO_PIN_CNF_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_Pos) |
                                      (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-   NRF_GPIO->OUTSET = (1UL << LED_BLUE_PIN);
-   NRF_GPIO->OUTCLR = (1UL << LED_RED_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   red ? (NRF_GPIO->OUTCLR = (1UL << LED_RED_PIN)) : (NRF_GPIO->OUTSET = (1UL << LED_RED_PIN));
+   green ? (NRF_GPIO->OUTCLR = (1UL << LED_GREEN_PIN)) : (NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN));
+   blue ? (NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN)) : (NRF_GPIO->OUTSET = (1UL << LED_BLUE_PIN));
+}
+#endif
+
+/**
+ * @brief Main
+ */
+int main()
+{
+
+   #if defined(XIAO_NRF52840)
+   SetLEDs(true, false, false);
    #endif	
 
    nrf_clock_lf_cfg_t clock_source;
 
    // Initialize nrf_nvic_state to 0
    memset(&nrf_nvic_state, 0, sizeof(nrf_nvic_state));
-
 
    /*** scatter file loading done by sd_softdevice_enable must be done first before any RAM access ***/
 
@@ -238,10 +246,7 @@ int main()
    ulErrorCode = sd_softdevice_enable(&clock_source, softdevice_assert_callback, ANT_LICENSE_KEY);
 
    #if defined(XIAO_NRF52840)
-   //After SoftDevice is enabled switch to red+blue 
-   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
-   NRF_GPIO->OUTCLR = (1UL << LED_RED_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   SetLEDs(true, false, true);
    #endif	
 
    APP_ERROR_CHECK(ulErrorCode);
@@ -294,19 +299,13 @@ int main()
    event_buffering_init();
 
    #if defined(XIAO_NRF52840)
-   //After System init switch to blue 
-   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_GREEN_PIN);
+   SetLEDs(true, true, false);
    #endif	
 
    Serial_Init();
 
    #if defined(XIAO_NRF52840)
-   //After Serial init switch to blue+green 
-   NRF_GPIO->OUTCLR = (1UL << LED_BLUE_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
-   NRF_GPIO->OUTCLR = (1UL << LED_GREEN_PIN);
+   SetLEDs(false, true, true);
    #endif	
 
    pstRxMessage = Serial_GetRxMesgPtr();
@@ -321,12 +320,8 @@ int main()
    APP_ERROR_CHECK(ulErrorCode);
 
    #if defined(XIAO_NRF52840)
-   //Everything done, switch to green 
-   NRF_GPIO->OUTSET = (1UL << LED_BLUE_PIN);
-   NRF_GPIO->OUTSET = (1UL << LED_RED_PIN);
-   NRF_GPIO->OUTCLR = (1UL << LED_GREEN_PIN);
+   SetLEDs(false, true, false);
    #endif	
-
 
    // loop forever
    while (1)

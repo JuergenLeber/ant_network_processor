@@ -76,6 +76,11 @@ void System_Init(void)
    NRF_GPIO->OUT = PIN_OUT_INIT;
    NRF_GPIO->DIR = PIN_DIR_INIT;
 
+	#if defined (SERIAL_SYNC_NRF_P1)
+   NRF_P1->OUT = PIN_OUT_INIT;
+   NRF_P1->DIR = PIN_DIR_INIT;
+	#endif
+	
    SCB->SCR |= SCB_SCR_SEVONPEND_Msk; // allow wakeup from enabled events and all interrupts (including disabled)
 
    // Setup RTC for time keeping at 32KHz
