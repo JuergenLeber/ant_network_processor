@@ -490,3 +490,7 @@ project:
         - +nRF52840_generic
         - +xiao_nRF52840_s212
         - +xiao_nRF52840_s340
+  output:
+    type:
+      - hex
+      - bin
