@@ -333,8 +333,8 @@ project:
         - ../../../modules/nrfx
         - ../../../integration/nrfx
         - ../../../modules/nrfx/mdk
-        - ../../../components/softdevice/s212/headers
-        - ../../../components/softdevice/s212/headers/nrf52
+        - ../../../components/softdevice/s340/headers
+        - ../../../components/softdevice/s340/headers/nrf52
       debug: "on"
       define:
         - NRF52840_XXAA

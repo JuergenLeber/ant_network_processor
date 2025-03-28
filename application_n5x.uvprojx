@@ -3144,7 +3144,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -3281,8 +3281,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x12000</StartAddress>
-                <Size>0x50000</Size>
+                <StartAddress>0x31000</StartAddress>
+                <Size>0xc3000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -3306,8 +3306,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20000b80</StartAddress>
-                <Size>0x40000</Size>
+                <StartAddress>0x20002000</StartAddress>
+                <Size>0x3e000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -3345,7 +3345,7 @@
               <MiscControls>--std=c99</MiscControls>
               <Define>NRF52840_XXAA, CONFIG_GPIO_AS_PINRESET, NRF52_RADIO, NRF52_N548_CONFIG, CONFIG_NFCT_PINS_AS_GPIOS, XIAO_NRF52840, SOFTDEVICE_PRESENT, DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>.\inc;.\common\inc;..\..\..\components\libraries\util;..\..\..\components\libraries\delay;..\..\..\modules\nrfx;..\..\..\integration\nrfx;..\..\..\modules\nrfx\mdk;..\..\..\components\softdevice\s212\headers;..\..\..\components\softdevice\s212\headers\nrf52</IncludePath>
+              <IncludePath>.\inc;.\common\inc;..\..\..\components\libraries\util;..\..\..\components\libraries\delay;..\..\..\modules\nrfx;..\..\..\integration\nrfx;..\..\..\modules\nrfx\mdk;..\..\..\components\softdevice\s340\headers;..\..\..\components\softdevice\s340\headers\nrf52</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
