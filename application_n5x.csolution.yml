@@ -21,7 +21,10 @@ solution:
     - type: nRF52840_generic
       device: nRF52840_xxAA
       optimize: debug
-    - type: xiao_nRF52840
+    - type: xiao_nRF52840_s212
+      device: nRF52840_xxAA
+      optimize: debug
+    - type: xiao_nRF52840_s340
       device: nRF52840_xxAA
       optimize: debug
   projects:

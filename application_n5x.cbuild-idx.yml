@@ -5,14 +5,14 @@ build-idx:
   cprojects:
     - cproject: application_n5x.cproject.yml
   cbuilds:
-    - cbuild: application_n5x+xiao_nRF52840.cbuild.yml
+    - cbuild: application_n5x+xiao_nRF52840_s340.cbuild.yml
       project: application_n5x
-      configuration: +xiao_nRF52840
+      configuration: +xiao_nRF52840_s340
       messages:
         info:
           - application_n5x.cbuild-pack.yml - file is already up-to-date
-          - application_n5x+xiao_nRF52840.cbuild-run.yml - file is already up-to-date
-          - application_n5x+xiao_nRF52840.cbuild.yml - file is already up-to-date
+          - application_n5x+xiao_nRF52840_s340.cbuild-run.yml - file is already up-to-date
+          - application_n5x+xiao_nRF52840_s340.cbuild.yml - file is already up-to-date
       packs-unused:
         - pack: ARM::CMSIS-DSP@1.16.2
         - pack: ARM::CMSIS-NN@4.1.0

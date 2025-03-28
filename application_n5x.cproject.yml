@@ -321,8 +321,71 @@ project:
             - --strict
             - --summary_stderr
             - --info summarysizes
-    - setup: Options for xiao_nRF52840
-      for-context: +xiao_nRF52840
+    - setup: Options for xiao_nRF52840_s212
+      for-context: +xiao_nRF52840_s212
+      processor:
+        fpu: sp
+      add-path:
+        - inc
+        - common/inc
+        - ../../../components/libraries/util
+        - ../../../components/libraries/delay
+        - ../../../modules/nrfx
+        - ../../../integration/nrfx
+        - ../../../modules/nrfx/mdk
+        - ../../../components/softdevice/s212/headers
+        - ../../../components/softdevice/s212/headers/nrf52
+      debug: "on"
+      define:
+        - NRF52840_XXAA
+        - CONFIG_GPIO_AS_PINRESET
+        - NRF52_RADIO
+        - NRF52_N548_CONFIG
+        - CONFIG_NFCT_PINS_AS_GPIOS
+        - XIAO_NRF52840
+        - SOFTDEVICE_PRESENT
+        - DEBUG
+      misc:
+        - C:
+            - -std=c99
+          C-CPP:
+            - -fno-rtti
+            - -funsigned-char
+            - -fno-function-sections
+            - -Wno-packed
+            - -Wno-missing-variable-declarations
+            - -Wno-missing-prototypes
+            - -Wno-missing-noreturn
+            - -Wno-sign-conversion
+            - -Wno-nonportable-include-path
+            - -Wno-reserved-id-macro
+            - -Wno-unused-macros
+            - -Wno-documentation-unknown-command
+            - -Wno-documentation
+            - -Wno-license-management
+            - -Wno-parentheses-equality
+            - --std=c99
+          CPP:
+            - -xc++
+            - -std=c++11
+            - -fno-exceptions
+          ASM:
+            - -masm=auto
+          Link:
+            - --map
+            - --load_addr_map_info
+            - --xref
+            - --callgraph
+            - --symbols
+            - --info sizes
+            - --info totals
+            - --info unused
+            - --info veneers
+            - --strict
+            - --summary_stderr
+            - --info summarysizes
+    - setup: Options for xiao_nRF52840_s340
+      for-context: +xiao_nRF52840_s340
       processor:
         fpu: sp
       add-path:
@@ -397,8 +460,10 @@ project:
       for-context: +nRF52832_generic
     - script: application_n5x_nRF52840_generic.sct
       for-context: +nRF52840_generic
-    - script: application_n5x_xiao_nRF52840.sct
-      for-context: +xiao_nRF52840
+    - script: application_n5x_xiao_nRF52840_s212.sct
+      for-context: +xiao_nRF52840_s212
+    - script: application_n5x_xiao_nRF52840_s340.sct
+      for-context: +xiao_nRF52840_s340
   groups:
     - group: main
       files:
@@ -423,8 +488,5 @@ project:
     - component: NordicSemiconductor::Device:Startup
       for-context:
         - +nRF52840_generic
-        - +xiao_nRF52840
-  output:
-    type:
-      - hex
-      - bin
+        - +xiao_nRF52840_s212
+        - +xiao_nRF52840_s340
