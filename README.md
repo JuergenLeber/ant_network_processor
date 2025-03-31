@@ -61,16 +61,29 @@ To install this pack just open a new terminal **from inside Visual Studio Code**
 ### Packaging
 - Install nrfutil as described [here](https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html#installing-nrf-util-from-the-web-default)
 - Install the 'nrf5sdk-tools' by executing `nrfutil install nrf5sdk-tools`
-- Build the desired target and write down the full path to the `application_{target}.hex` file
-- Additionally, write down the full path to the SoftDevice S212 file `ANT_s212_nrf52_7.0.1.hex`
-- Create the DFU package by executing e.g. ```nrfutil nrf5sdk-tools pkg generate --hw-version 52 --sd-req 0xEE --sd-id=0xEE --softdevice ../../../../components/softdevice/s212/hex/ANT_s212_nrf52_7.0.1.hex --application application_{target}.hex --application-version 2 application_{target}.zip``` (of course adjust the file names and paths accordingly)
+- Build the desired target and open a terminal inside Visual Studio Code where your `application_n5x.hex` file resides or `cd` to that folder
+- Additionally, write down the full path to the SoftDevice file e.g. `ANT_s340_nrf52_7.0.1.hex` (depending on the SoftDevice you're using) because this path is needed in the next step
+- Create the DFU package by executing e.g. ```nrfutil nrf5sdk-tools pkg generate --hw-version 52 --sd-req 0x00CE --sd-id=0x00CE --softdevice ../../../../../../components/softdevice/s340/hex/ANT_s340_nrf52_7.0.1.hex --application application_n5x.hex --application-version 1 application_n5x.zip``` (of course adjust the file names and paths accordingly)
+- In case you're going to use a different SoftDevice than S340: The parameters `--sd-req` and `--sd-id` are the values from the SoftDevice's release note (search for 'Firmware ID')
+
+srec_cat ../../../../../../components/softdevice/s340/hex/ANT_s340_nrf52_7.0.1.hex -Intel application_n5x.hex -Intel -o application_n5x_s3
+40.hex -Intel
+~/Development/uf2/utils/uf2conv.py application_n5x_s340.hex --convert --base 0x0 --family 0x28860044 --output application_n5x_s340.uf2 
+
 
 ### Packaging for UF2 (Seeed XIAO nRF52840 boards with special bootloader)
 - Instructions about uf2conv.py [here](https://github.com/microsoft/uf2/blob/master/utils/uf2conv.md)
 - Make sure you have Python installed and working
 - Clone the [Microsoft uf2 repository](https://github.com/microsoft/uf2.git)
 - Go to the `uf2/utils` folder and do `chmod +x uf2conv.py` to make the script executable
-- Take the package zip file `application_xiao_nRF52840.zip` created in the last step, extract its contents and go to this folder
+
+- Make sure the correct bootloader with the SoftDevice S212 or better S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
+- Open a terminal in Visual Studio Code and go to the folder `./out/application_n5x/<target>` (where target is e.g. `xiao_nRF52840_s340`)
+- Execute `uf2conv.py application_n5x.hex --convert --base 0x32000 --family 0xADA52840 --output application_n5x.uf2`
+- Connect the XIAO board via USB-C and double-press the reset button quickly. This will lead to the device being in bootloader mode and create a device like a flash drive. Additionally the red led will start to fade in and out.
+- Copy the `application_n5x.uf2` file to the flash drive. It will immediately flash and reboot after copying and throw an error that the device got removed unexpectedly. That sounds bad but is good news - the flashing of the application worked! 
+
+- Take the package zip file `application_n5x.zip` created in the last step, extract its contents and go to this folder
 - Execute `uf2conv.py ANT_s212_nrf52_7.0.1.bin --convert --base 0x1000 --family 0x28860045 --output softdevice.uf2` to create the uf2 file with the SoftDevice
 - Execute `uf2conv.py application_xiao_nRF52840.bin --convert --base 0x12000 --family 0x28860045 --output application.uf2` to create the uf2 file with the application itself
 - Now connect the Seeed XIAO (Sense) board to your computer and double press the reset button quickly to activate the upload mode
