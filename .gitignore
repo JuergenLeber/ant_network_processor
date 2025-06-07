@@ -9,4 +9,4 @@ application_n5x.uvoptx
 uv2csolution.log
 out
 tmp
-application_n5x*cbuild*yml
+application_n5x+*cbuild*.yml
