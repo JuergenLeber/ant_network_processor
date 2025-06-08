@@ -88,7 +88,7 @@ To install this pack just open a new terminal **from inside Visual Studio Code**
 - Make sure you have Python installed and working
 - Clone the [Microsoft uf2 repository](https://github.com/microsoft/uf2.git)
 - Go to the `uf2/utils` folder and do `chmod +x uf2conv.py` to make the script executable
-- **IMPORTANT:** Make sure the correct bootloader with the SoftDevice S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
+- **IMPORTANT:** Make sure the correct bootloader with the SoftDevice S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#working-with-softdevice-s340) 
 - Open a terminal in Visual Studio Code and go to the folder `./out/application_n5x/<target>` (where target is e.g. `xiao_nRF52840_s340`)
 - Execute `uf2conv.py application_n5x.bin --convert --base 0x31000 --family 0xADA52840 --output application_n5x.uf2`
 - Connect the XIAO board via USB-C and double-press the reset button quickly. This will lead to the device being in bootloader mode and create a device like a flash drive. Additionally the red led will start to fade in and out.
