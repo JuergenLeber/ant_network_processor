@@ -88,7 +88,7 @@ To install this pack just open a new terminal **from inside Visual Studio Code**
 - Make sure you have Python installed and working
 - Clone the [Microsoft uf2 repository](https://github.com/microsoft/uf2.git)
 - Go to the `uf2/utils` folder and do `chmod +x uf2conv.py` to make the script executable
-- Make sure the correct bootloader with the SoftDevice S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
+- **IMPORTANT:** Make sure the correct bootloader with the SoftDevice S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
 - Open a terminal in Visual Studio Code and go to the folder `./out/application_n5x/<target>` (where target is e.g. `xiao_nRF52840_s340`)
 - Execute `uf2conv.py application_n5x.bin --convert --base 0x31000 --family 0xADA52840 --output application_n5x.uf2`
 - Connect the XIAO board via USB-C and double-press the reset button quickly. This will lead to the device being in bootloader mode and create a device like a flash drive. Additionally the red led will start to fade in and out.
@@ -96,17 +96,17 @@ To install this pack just open a new terminal **from inside Visual Studio Code**
 - The build for the Seeed XIAO (Sense) boards has been extended with the LEDs showing the startup state. It starts with a single red LED and in the end if everything worked only the green LED is activated meaning everything worked perfectly!
 
 ### Seeed XIAO Pinout
-| Seeed XIAO (Sense) | -> | ant_network_processor | Function |
+| Seeed XIAO (Sense) | &#10132; | ant_network_processor | Function |
 |-|-|-|-|
-| D0 | -> | SLEEP | Async -> Sleep mode enable, Sync -> Message ready indication |
-| D1 | -> | PORTSEL | Async mode -> Tie to GND, Sync mode -> Tie to VCC |
-| D2 | -> | nSUSPEND | Async -> Suspend control, Sync -> Serial port ready |
-| D3 | -> | RTS | Async -> RTS, Sync -> Serial enable signal |
-| D6 | -> | TXD | Data output |
-| D7 | -> | RXD | Data input |
-| D8 | -> | BR2 / SCK | Async -> Baud rate selection 2, Sync -> Clock output signal |
-| D9 | -> | BR1 / MISO | Async -> Baud rate selection 1, Sync -> Not used |
-| D10 | -> | BR3 / MOSI | Async -> Baud rate selection 3, Sync -> Clock speed selection |
+| D0 | &#10132; | SLEEP | Async &#10132; Sleep mode enable, Sync &#10132; Message ready indication |
+| D1 | &#10132; | PORTSEL | Async mode &#10132; Tie to GND, Sync mode &#10132; Tie to VCC |
+| D2 | &#10132; | nSUSPEND | Async &#10132; Suspend control, Sync &#10132; Serial port ready |
+| D3 | &#10132; | RTS | Async &#10132; RTS, Sync &#10132; Serial enable signal |
+| D6 | &#10132; | TXD | Data output |
+| D7 | &#10132; | RXD | Data input |
+| D8 | &#10132; | BR2 / SCK | Async &#10132; Baud rate selection 2, Sync &#10132; Clock output signal |
+| D9 | &#10132; | BR1 / MISO | Async &#10132; Baud rate selection 1, Sync &#10132; Not used |
+| D10 | &#10132; | BR3 / MOSI | Async &#10132; Baud rate selection 3, Sync &#10132; Clock speed selection |
 
 ![seeed-xiao-pinout](./seeed-xiao-pinout.png)
 
@@ -123,17 +123,17 @@ To install this pack just open a new terminal **from inside Visual Studio Code**
 | 1 | 0 | 0 | 115200 |
 
 ### Example connection
-| ant_network_processor | -> | Your hardware | Description |
+| ant_network_processor | &#10132; | Your hardware | Description |
 |-|-|-|-|
-| SLEEP | -> | GND | Tie to GND to not have the ant_network_processor go to sleep |
-| PORTSEL | -> | GND | Tie to GND for async/UART mode |
-| nSUSPEND | -> | VCC | Tie to VCC to not suspend (as it's negated) |
-| RTS | -> | CTS | Serial flow control - if available |
-| TXD | -> | RXD | Data output from ant_network_processor to your hardware |
-| RXD | -> | TXD | Data input for ant_network_processor from your hardware |
-| BR3 | -> | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
-| BR2 | -> | GND | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
-| BR1 | -> | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
+| SLEEP | &#10132; | GND | Tie to GND to not have the ant_network_processor go to sleep |
+| PORTSEL | &#10132; | GND | Tie to GND for async/UART mode |
+| nSUSPEND | &#10132; | VCC | Tie to VCC to not suspend (as it's negated) |
+| RTS | &#10132; | CTS | Serial flow control - if available |
+| TXD | &#10132; | RXD | Data output from ant_network_processor to your hardware |
+| RXD | &#10132; | TXD | Data input for ant_network_processor from your hardware |
+| BR3 | &#10132; | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
+| BR2 | &#10132; | GND | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
+| BR1 | &#10132; | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
 
 ## [Copyright notice](LICENSE_A+SS.txt)
 ```
