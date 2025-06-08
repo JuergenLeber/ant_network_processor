@@ -2,14 +2,20 @@
 # ant_network_processor 
 The ANT Network Processor reference design is provided as a drop-in example for the Nordic nRF5 SDK. You can find the original and unmodified source [here](https://www.thisisant.com/resources/nrf52-network-processor-source/). 
 
-This version has been extended and updated to the newest SDKs and compilers. The project can be built either with Keil µVision5 or with the [Arm Keil Studio Pack (MDK v6)](https://marketplace.visualstudio.com/items?itemName=Arm.keil-studio-pack) in Visual Studio Code on Windows, Mac OS and Linux. It additionally supports building for Seeed XIAO nRF52840 boards with a special pinout configuration.
+For the functionality and pinouts see **Appendix A** in the [D52 ANT SoC Module Series Datasheet](https://www.thisisant.com/assets/resources/D00001687_D52_Module_Datasheet.v.2.3_(Garmin).pdf)
 
-Close this repository into the 'examples\ant' folder of the nRF5 SDK (see [below](#required-downloads)) from Nordic Semiconductor. Header files for the ANT SoftDevice should be copied to the appropriate folder in 'components\softdevice\'. Detailed instructions below.
+This version has been extended and updated to the newest SDKs and compilers. The project can be built either with Keil µVision5 on Windows only or with the [Arm Keil Studio Pack (MDK v6)](https://marketplace.visualstudio.com/items?itemName=Arm.keil-studio-pack) in Visual Studio Code on Windows, Mac OS and Linux. 
+
+It additionally supports building for Seeed XIAO nRF52840 boards with a special pinout configuration. See instructions [here](#packaging-for-uf2-seeed-xiao-sense-nrf52840-boards-with-special-adafruit-bootloader).
+
+If you're interested in how the project has been migrated from a Keil µVision project to a CMSIS Solution for Arm Keil Studio have a look at the [migration](migration.md) document.
+
+Clone this repository into the 'examples\ant' folder of the nRF5 SDK (see [below](#required-downloads)) from Nordic Semiconductor. Header files for the ANT SoftDevice should be copied to the appropriate folder in 'components\softdevice\'. See detailed instructions below.
 
 SDK Compatibility:
 - nRF5 SDK v17.1.0
 
-Supported SoftDevice:
+Supported SoftDevices:
 - S212 v7.0.1 (ANT_s212_nrf52_7.0.1)
 - S340 v7.0.1 (ANT_s340_nrf52_7.0.1)
 
@@ -39,91 +45,95 @@ Depending on the board you want to build for you have to download the appropriat
 For the build you'll need to have Visual Studio Code with the [Arm Keil Studio Pack (MDK v6)](https://marketplace.visualstudio.com/items?itemName=Arm.keil-studio-pack) installed. 
 
 ### Required downloads
-- The SoftDevices as described [above](#softdevices)
-- Nordic nRF5 SDK v17.1.0 [(here)](https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download#infotabs)
+- The SoftDevices as mentioned [above](#softdevices)
+- Nordic nRF5 SDK v17.1.0 [(here)](https://www.nordicsemi.com/Products/Development-software/nRF5-SDK/Download#infotabs) 
+- **(OPTIONAL)** SEGGER J-Link Software Pack (J-Flash, RTT Viewer etc.) [(here)](https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack)
+
+### Required hardware 
+- **(OPTIONAL)** SEGGER J-Link Adapter [(here)](https://www.segger.com/supported-devices/jlink/)
+  (not necessary for Seeed XIAO modules as they can be flashed via UF2/USB BUT needed to unbrick them)
 
 ### Build
-- Extract the nRF5 SDK v17.1.0 (extracts to a folder `nRF5_SDK_17.1.0_ddde560`)   
-- Extract the SoftDevice S212 v7.0.1 (extracts to a folder `ANT_s212_nrf52_7.0.1`). Besides other files it contains:
-  - `ANT_s212_nrf52_7.0.1.hex` -> Move this file to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/hex` (create the folder before)
-  - The folder `ANT_s212_nrf52_7.0.1.API/include` -> Move the **contents** (not the 'include' folder itself!) including subfolders to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/headers`  
-- Clone this repository into the `examples/ant` folder of the nRF5 SDK so it will reside in `nRF5_SDK_17.1.0_ddde560/examples/ant/ant_network_processor`.
-- **Important:** Edit the file `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/headers/nrf_sdm.h` and uncomment the line #191 to use the evaluation ANT_LICENSE_KEY.
-- Repeat the same step with the SoftDevice S340 v7.0.1 (to folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s340` then)
+- Extract the nRF5 SDK v17.1.0 (extracts to a folder `nRF5_SDK_17.1.0_ddde560`)
+- Extract the SoftDevices:   
+  - Extract the SoftDevice S212 v7.0.1 (extracts to a folder `ANT_s212_nrf52_7.0.1`). Besides other files it contains:
+    - `ANT_s212_nrf52_7.0.1.hex` -> Move this file to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/hex` (create the folder before)
+    - The folder `ANT_s212_nrf52_7.0.1.API/include` -> Move the **contents** (not the 'include' folder itself!) including subfolders to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/headers`  
+  - Extract the SoftDevice S340 v7.0.1 (extracts to a folder `ANT_s340_nrf52_7.0.1`). Besides other files it contains:
+    - `ANT_s340_nrf52_7.0.1.hex` -> Move this file to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s340/hex` (create the folder before)
+    - The folder `ANT_s340_nrf52_7.0.1.API/include` -> Move the **contents** (not the 'include' folder itself!) including subfolders to the folder `nRF5_SDK_17.1.0_ddde560/components/softdevice/s340/headers`  
+- **Important:** Edit the files `nRF5_SDK_17.1.0_ddde560/components/softdevice/s212/headers/nrf_sdm.h` and `nRF5_SDK_17.1.0_ddde560/components/softdevice/s340/headers/nrf_sdm.h` and uncomment the line #191 in each to use the evaluation ANT_LICENSE_KEY or alternatively put in your own ANT license key
+- Clone this repository into the `examples/ant` folder of the nRF5 SDK so it will reside in `nRF5_SDK_17.1.0_ddde560/examples/ant/ant_network_processor`
 - Open the folder `nRF5_SDK_17.1.0_ddde560/examples/ant/ant_network_processor` in Visual Studio Code and it will automatically detect the CMSIS solution
 - Change to the CMSIS view and click the small 'gear' to manage the solution settings. There you can select the desired target that you want to build, e.g. `xiao_nRF52840_s340`
 - Click the 'three dots' and select 'Rebuild solution' to build
-- The binaries will then be in the folder `nRF5_SDK_17.1.0_ddde560/examples/ant/ant_network_processor/out/application_n5x` with an additional subfolder for the specified target
+- The binaries will then be in the folder `nRF5_SDK_17.1.0_ddde560/examples/ant/ant_network_processor/out/application_n5x` with an additional subfolder for the specified target (e.g. `xiao_nRF52840_s340`)
 
 In case you're experiencing problems with the automatic download of the nRF Device Family Pack you can manually download it [here](https://www.nordicsemi.com/Products/Development-tools/nRF-MDK/Download#infotabs). The version 8.44.1 can directly be downloaded [here](https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/desktop-software/nrf-mdk/sw/8-44-1/nordicsemiconductor.nrf_devicefamilypack.8.44.1.pack).
 To install this pack just open a new terminal **from inside Visual Studio Code** and execute `cpackget add nordicsemiconductor.nrf_devicefamilypack.8.44.1.pack`
 
-### Packaging
-- Install nrfutil as described [here](https://docs.nordicsemi.com/bundle/nrfutil/page/guides/installing.html#installing-nrf-util-from-the-web-default)
-- Install the 'nrf5sdk-tools' by executing `nrfutil install nrf5sdk-tools`
-- Build the desired target and open a terminal inside Visual Studio Code where your `application_n5x.hex` file resides or `cd` to that folder
-- Additionally, write down the full path to the SoftDevice file e.g. `ANT_s340_nrf52_7.0.1.hex` (depending on the SoftDevice you're using) because this path is needed in the next step
-- Create the DFU package by executing e.g. ```nrfutil nrf5sdk-tools pkg generate --hw-version 52 --sd-req 0x00CE --sd-id=0x00CE --softdevice ../../../../../../components/softdevice/s340/hex/ANT_s340_nrf52_7.0.1.hex --application application_n5x.hex --application-version 1 application_n5x.zip``` (of course adjust the file names and paths accordingly)
-- In case you're going to use a different SoftDevice than S340: The parameters `--sd-req` and `--sd-id` are the values from the SoftDevice's release note (search for 'Firmware ID')
+### Flashing via J-Flash
+- Create a new project in J-Flash with the corresponding target device (e.g. `nRF52840_xxAA`)
+- Target interface is `SWD` and Speed is `4000 kHz`
+- Connect the J-Link interface first to the device and then to your computer
+- Check the connection via menu "Target" -> "Connect" and only continue if it responds with `Connected successfully` in the log
+- Select menu "Target" -> "Manual Programming" -> "Erase Chip"
+- Load the corresponding SoftDevice hex file (e.g. `ANT_s340_nrf52_7.0.1.hex`) via menu "File" -> "Open data file..."
+- Program it via menu "Target" -> "Manual Programming" -> "Program & Verify"
+- Load the corresponding application hex file (e.g. `./ant_network_processor/out/application_n5x/xiao_nRF52840_s340/application_n5x.hex`) via menu "File" -> "Open data file..."
+- Program it via menu "Target" -> "Manual Programming" -> "Program & Verify"
 
-srec_cat ../../../../../../components/softdevice/s340/hex/ANT_s340_nrf52_7.0.1.hex -Intel application_n5x.hex -Intel -o application_n5x_s3
-40.hex -Intel
-~/Development/uf2/utils/uf2conv.py application_n5x_s340.hex --convert --base 0x0 --family 0x28860044 --output application_n5x_s340.uf2 
-
-
-### Packaging for UF2 (Seeed XIAO nRF52840 boards with special bootloader)
+### Packaging for UF2 (Seeed XIAO (Sense) nRF52840 boards with special Adafruit bootloader)
 - Instructions about uf2conv.py [here](https://github.com/microsoft/uf2/blob/master/utils/uf2conv.md)
 - Make sure you have Python installed and working
 - Clone the [Microsoft uf2 repository](https://github.com/microsoft/uf2.git)
 - Go to the `uf2/utils` folder and do `chmod +x uf2conv.py` to make the script executable
-
-- Make sure the correct bootloader with the SoftDevice S212 or better S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
+- Make sure the correct bootloader with the SoftDevice S340 is installed or install it as described [here](https://github.com/JuergenLeber/Adafruit_nRF52_Bootloader?tab=readme-ov-file#how-to-add-softdevice-s340-v701) 
 - Open a terminal in Visual Studio Code and go to the folder `./out/application_n5x/<target>` (where target is e.g. `xiao_nRF52840_s340`)
-- Execute `uf2conv.py application_n5x.hex --convert --base 0x32000 --family 0xADA52840 --output application_n5x.uf2`
+- Execute `uf2conv.py application_n5x.bin --convert --base 0x31000 --family 0xADA52840 --output application_n5x.uf2`
 - Connect the XIAO board via USB-C and double-press the reset button quickly. This will lead to the device being in bootloader mode and create a device like a flash drive. Additionally the red led will start to fade in and out.
-- Copy the `application_n5x.uf2` file to the flash drive. It will immediately flash and reboot after copying and throw an error that the device got removed unexpectedly. That sounds bad but is good news - the flashing of the application worked! 
+- Copy the `application_n5x.uf2` file to the flash drive. It will immediately flash and reboot after copying and throw an error that the device got removed unexpectedly. That sounds bad but is good news - the flashing of the application worked.
+- The build for the Seeed XIAO (Sense) boards has been extended with the LEDs showing the startup state. It starts with a single red LED and in the end if everything worked only the green LED is activated meaning everything worked perfectly!
 
-- Take the package zip file `application_n5x.zip` created in the last step, extract its contents and go to this folder
-- Execute `uf2conv.py ANT_s212_nrf52_7.0.1.bin --convert --base 0x1000 --family 0x28860045 --output softdevice.uf2` to create the uf2 file with the SoftDevice
-- Execute `uf2conv.py application_xiao_nRF52840.bin --convert --base 0x12000 --family 0x28860045 --output application.uf2` to create the uf2 file with the application itself
-- Now connect the Seeed XIAO (Sense) board to your computer and double press the reset button quickly to activate the upload mode
-- Copy the `softdevice.uf2` file to the board. Probably the copy process will end with an error because the board will immediately reboot after the file is written. To check the correct upload just have a look into the `INFO_UF2.TXT` file which should now read `SoftDevice: S212 version 7.0.1` in line four.
-- If everything went fine in the last steps, continue with copying the `application.uf2` file to the board.
-- Now we have to create a `.hex` file with the contents of the SoftDevice and the application itself **BUT WITHOUT** the initial 4096 bytes which can't be overwritten as they are the MBR:
-  - A convenient way is to use the [SRecord](https://srecord.sourceforge.net) tools. If you're using a Mac with Homebrew they can easily be installed by typing `brew install srecord`
-  - Go to the folder where the SoftDevice S212 file `ANT_s212_nrf52_7.0.1.hex` resides
-  - Execute `srec_info ANT_s212_nrf52_7.0.1.hex -Intel` and you can see that it consists of two data blocks:
-     ```
-      Format: Intel Hexadecimal (MCS-86)
-      Data:   0000 - 0AFF
-              1000 - F283
-     ```
-  - Execute `uf2conv.py ANT_s212_nrf52_7.0.1.bin --convert --base 0x1000 --output softdevice.uf2` to create the uf2 file with the SoftDevice
+### Seeed XIAO Pinout
+| Seeed XIAO (Sense) | -> | ant_network_processor | Function |
+|-|-|-|-|
+| D0 | -> | SLEEP | Async -> Sleep mode enable, Sync -> Message ready indication |
+| D1 | -> | PORTSEL | Async mode -> Tie to GND, Sync mode -> Tie to VCC |
+| D2 | -> | nSUSPEND | Async -> Suspend control, Sync -> Serial port ready |
+| D3 | -> | RTS | Async -> RTS, Sync -> Serial enable signal |
+| D6 | -> | TXD | Data output |
+| D7 | -> | RXD | Data input |
+| D8 | -> | BR2 / SCK | Async -> Baud rate selection 2, Sync -> Clock output signal |
+| D9 | -> | BR1 / MISO | Async -> Baud rate selection 1, Sync -> Not used |
+| D10 | -> | BR3 / MOSI | Async -> Baud rate selection 3, Sync -> Clock speed selection |
 
-## How compiling the original source code works
-Unfortunately the Keil ARM MDK and especially Keil µVision are Windows-only software. You can use tools like [Wine](https://www.winehq.org) or [Crossover](https://www.codeweavers.com/crossover) to run the software on Mac OS or Linux. If you're using an Apple Silicon Mac you can also use [Whisky](https://github.com/Whisky-App/Whisky) which is free and works perfectly for this purpose.
+![seeed-xiao-pinout](./seeed-xiao-pinout.png)
 
-### Required downloads
-- Keil MDK v5.36 (last version with Arm Compiler 5 and 6) [(here)](https://armkeil.blob.core.windows.net/eval/MDK536.EXE)
+### Baud rate selection in async mode
+| BR3 | BR2 | BR1 | Baud Rate |
+|-|-|-|-|
+| 1 | 1 | 0 | 2400 |
+| 0 | 0 | 0 | 4800 |
+| 1 | 0 | 1 | 9600 |
+| 0 | 1 | 0 | 19200 |
+| 0 | 0 | 1 | 38400 |
+| 0 | 1 | 1 | 57600 |
+| 1 | 1 | 1 | 57600 |
+| 1 | 0 | 0 | 115200 |
 
-### Software installation
-- Install Keil MDK v5.36 to the default folder `C:\Keil_v5` as it will make problems with longer folder names and/or spaces or special characters in the folder name.
-  - After successfull installation it automatically starts the "Pack Installer" which then downloads all the pack information. This may take a while, just let it do. 
-  - If it detects any updates you can install them (sort by "Action" and click "Update"). 
-- Extract the nRF5 SDK v17.1.0 (extracts to a folder `nRF5_SDK_17.1.0_ddde560`) and move it to the folder `C:\Nordic\SDK`.  
-- Extract the SoftDevice S212 v7.0.1 (extracts to a folder `ANT_s212_nrf52_7.0.1`). Besides other files it contains:
-  - `ANT_s212_nrf52_7.0.1.hex` -> Move this file to the folder `C:\Nordic\SDK\nRF5_SDK_17.1.0_ddde560\components\softdevice\s212\hex` (create the folder before)
-  - The folder `ANT_s212_nrf52_7.0.1.API\include` -> Move the **contents** (not the 'include' folder itself!) including subfolders to the folder `C:\Nordic\SDK\nRF5_SDK_17.1.0_ddde560\components\softdevice\s212\headers`  
-- Clone this repository into the `examples\ant` folder of the nRF5 SDK so it will reside in `C:\Nordic\SDK\nRF5_SDK_17.1.0_ddde560\examples\ant\ant_network_processor`.
-- Edit the file `C:\Nordic\SDK\nRF5_SDK_17.1.0_ddde560\components\softdevice\s212\headers\nrf_sdm.h` and uncomment the line #191 to use the evaluation ANT_LICENSE_KEY.
-
-### Compilation
-- Open Keil µVision5
-- Go to Project -> Open Project and open the project file `application_n5x.uvprojx` in `C:\Nordic\SDK\nRF5_SDK_17.1.0_ddde560\examples\ant\ant_network_processor`
-- Keil µVision5 will complain that at least one device wasn't found and that we should update our device selection. We just click 'OK' here and it will launch the 'Pack Installer' with the necessary information. Just follow the instructions and it will install everything that is needed.
-- If you have updated CMSIS in one of the steps before: Go to Project -> Manage -> 'Select Software Packs' and uncheck 'Use latest versions of all installed Software Packs'. Then select ARM::CMSIS Version 5.8.0 instead of 6.1.0. You have to do this for every target configuration.
-- Select the corresponding target in the drop down box in the menu ('d52q module', 'd52m_module', etc.)
-- Finally go to Project -> 'Build target' and it should compile everything without errors.
+### Example connection
+| ant_network_processor | -> | Your hardware | Description |
+|-|-|-|-|
+| SLEEP | -> | GND | Tie to GND to not have the ant_network_processor go to sleep |
+| PORTSEL | -> | GND | Tie to GND for async/UART mode |
+| nSUSPEND | -> | VCC | Tie to VCC to not suspend (as it's negated) |
+| RTS | -> | CTS | Serial flow control - if available |
+| TXD | -> | RXD | Data output from ant_network_processor to your hardware |
+| RXD | -> | TXD | Data input for ant_network_processor from your hardware |
+| BR3 | -> | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
+| BR2 | -> | GND | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
+| BR1 | -> | VCC | 9600 Baud, see [here](#baud-rate-selection-in-async-mode) |
 
 ## [Copyright notice](LICENSE_A+SS.txt)
 ```
